@@ -1,0 +1,82 @@
+.card-modal {
+  text-align: center;
+}
+
+.card-modal__icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.card-modal__type {
+  display: inline-block;
+  padding: 4px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.card-modal__type--chance {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+}
+
+.card-modal__type--community_chest {
+  background: linear-gradient(135deg, #f093fb, #f5576c);
+  color: #fff;
+}
+
+.card-modal__description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.card-modal__effect {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding: 8px;
+}
+
+.card-modal__effect--gain {
+  color: #2ecc71;
+}
+
+.card-modal__effect--lose {
+  color: #e74c3c;
+}
+
+.card-modal__effect--move {
+  color: #3498db;
+}
+
+.card-modal__effect--jail {
+  color: #e74c3c;
+}
+
+.card-modal__effect--other {
+  color: #f39c12;
+}
+
+.card-modal__btn {
+  padding: 10px 40px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  transition: all 0.2s;
+}
+
+.card-modal__btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}

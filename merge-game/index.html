@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>合成大冒险</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: none;
+        }
+
+        :root {
+            --primary: #FF6B6B;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --text-dark: #2D3748;
+            --text-light: #718096;
+            --shadow: rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 开始页面 */
+        .start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .start-screen.hidden {
+            opacity: 0;
+            transform: scale(0.95);
+            pointer-events: none;
+        }
+
+        .game-title {
+            font-size: clamp(2.5rem, 10vw, 4rem);
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .game-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.85);
+            margin-bottom: 3rem;
+            font-weight: 600;
+        }
+
+        .start-btn {
+            padding: 1.2rem 4rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, var(--accent) 0%, #FFD93D 100%);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 30px rgba(255, 230, 109, 0.4);
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(255, 230, 109, 0.5);
+        }
+
+        .start-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* 游戏主界面 */
+        .game-container {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            flex-direction: column;
+            padding: 1rem;
+        }
+
+        .game-container.active {
+            display: flex;
+        }
+
+        /* 顶部信息栏 */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-display {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .score-label {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.7);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .score-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .level-display {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        /* 游戏棋盘 */
+        .game-board {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .board-container {
+            position: relative;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 12px;
+            box-shadow: 
+                0 20px 60px rgba(0,0,0,0.3),
+                inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: min(calc(100vw - 3rem), 380px);
+            aspect-ratio: 1;
+        }
+
+        .cell {
+            background: rgba(255,255,255,0.08);
+            border-radius: 16px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .cell.highlight {
+            background: rgba(255,255,255,0.2);
+            box-shadow: inset 0 0 20px rgba(255,255,255,0.1);
+        }
+
+        /* 元素样式 */
+        .item {
+            width: 85%;
+            height: 85%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: grab;
+            position: relative;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+            box-shadow: 
+                0 4px 15px rgba(0,0,0,0.2),
+                inset 0 -3px 10px rgba(0,0,0,0.1),
+                inset 0 3px 10px rgba(255,255,255,0.3);
+        }
+
+        .item:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+        }
+
+        .item.dragging {
+            opacity: 0.5;
+            transform: scale(0.9);
+        }
+
+        .item.level-1 { background: linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%); }
+        .item.level-2 { background: linear-gradient(135deg, #98D8C8 0%, #4ECDC4 100%); }
+        .item.level-3 { background: linear-gradient(135deg, #F7DC6F 0%, #F39C12 100%); }
+        .item.level-4 { background: linear-gradient(135deg, #BB8FCE 0%, #8E44AD 100%); }
+        .item.level-5 { background: linear-gradient(135deg, #85C1E2 0%, #3498DB 100%); }
+        .item.level-6 { background: linear-gradient(135deg, #F8B739 0%, #E74C3C 100%); }
+        .item.level-7 { background: linear-gradient(135deg, #58D68D 0%, #27AE60 100%); }
+        .item.level-8 { background: linear-gradient(135deg, #EC7063 0%, #C0392B 100%); }
+
+        .item::after {
+            content: '';
+            position: absolute;
+            top: 15%;
+            left: 20%;
+            width: 25%;
+            height: 15%;
+            background: rgba(255,255,255,0.4);
+            border-radius: 50%;
+            filter: blur(2px);
+        }
+
+        /* 合成动画 */
+        @keyframes mergePulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); filter: brightness(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        .item.merging {
+            animation: mergePulse 0.4s ease-out;
+        }
+
+        @keyframes popIn {
+            0% { transform: scale(0); }
+            60% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .item.new {
+            animation: popIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        /* 粒子效果 */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFade 0.6s ease-out forwards;
+        }
+
+        @keyframes particleFade {
+            0% { 
+                transform: translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            100% { 
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+
+        /* 底部控制栏 */
+        .bottom-bar {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .control-btn {
+            padding: 0.9rem 2rem;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-restart {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-restart:hover {
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+        }
+
+        .btn-hint {
+            background: linear-gradient(135deg, var(--secondary) 0%, #45B7AA 100%);
+            color: white;
+            box-shadow: 0 4px 20px rgba(78, 205, 196, 0.4);
+        }
+
+        .btn-hint:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(78, 205, 196, 0.5);
+        }
+
+        .btn-hint:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* 游戏结束弹窗 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 28px;
+            padding: 2.5rem;
+            text-align: center;
+            max-width: 320px;
+            width: 90%;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
+        }
+
+        .modal-overlay.show .modal {
+            transform: scale(1);
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-score {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-message {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .modal-btn {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border: none;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+
+        /* 连击提示 */
+        .combo-text {
+            position: absolute;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            pointer-events: none;
+            animation: comboFloat 1s ease-out forwards;
+            z-index: 50;
+        }
+
+        @keyframes comboFloat {
+            0% { 
+                transform: translateY(0) scale(0.5);
+                opacity: 0;
+            }
+            20% { 
+                transform: translateY(-20px) scale(1.2);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(-60px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* 提示高亮 */
+        .hint-pulse {
+            animation: hintPulse 1s ease-in-out infinite;
+        }
+
+        @keyframes hintPulse {
+            0%, 100% { 
+                box-shadow: 0 0 0 0 rgba(255, 230, 109, 0.6);
+                transform: scale(1);
+            }
+            50% { 
+                box-shadow: 0 0 0 15px rgba(255, 230, 109, 0);
+                transform: scale(1.05);
+            }
+        }
+
+        /* 响应式优化 */
+        @media (max-height: 700px) {
+            .game-title { font-size: 2.2rem; }
+            .grid { width: min(calc(100vw - 2rem), 340px); gap: 8px; }
+            .item { font-size: 1.6rem; }
+            .cell { border-radius: 12px; }
+        }
+
+        @media (min-height: 900px) {
+            .grid { width: min(calc(100vw - 3rem), 420px); }
+            .item { font-size: 2.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 开始页面 -->
+    <div class="start-screen" id="startScreen">
+        <h1 class="game-title">🎮 合成大冒险</h1>
+        <p class="game-subtitle">拖拽合成，创造无限可能</p>
+        <button class="start-btn" onclick="startGame()">开始游戏</button>
+    </div>
+
+    <!-- 游戏主界面 -->
+    <div class="game-container" id="gameContainer">
+        <div class="top-bar">
+            <div class="score-display">
+                <span class="score-label">得分</span>
+                <span class="score-value" id="scoreValue">0</span>
+            </div>
+            <div class="level-display">最高等级: <span id="maxLevel">1</span></div>
+        </div>
+
+        <div class="game-board">
+            <div class="board-container">
+                <div class="grid" id="gameGrid"></div>
+            </div>
+        </div>
+
+        <div class="bottom-bar">
+            <button class="control-btn btn-restart" onclick="restartGame()">
+                <span>🔄</span> 重置
+            </button>
+            <button class="control-btn btn-hint" id="hintBtn" onclick="showHint()">
+                <span>💡</span> 提示
+            </button>
+        </div>
+    </div>
+
+    <!-- 游戏结束弹窗 -->
+    <div class="modal-overlay" id="gameOverModal">
+        <div class="modal">
+            <div class="modal-icon">🎉</div>
+            <h2 class="modal-title">游戏结束!</h2>
+            <div class="modal-score" id="finalScore">0</div>
+            <p class="modal-message" id="modalMessage">不错哦，继续挑战更高分吧！</p>
+            <button class="modal-btn" onclick="restartGame()">再玩一次</button>
+        </div>
+    </div>
+
+    <script>
+        // 游戏配置
+        const GRID_SIZE = 4;
+        const ITEMS = ['🍓', '🍊', '🍋', '🍇', '🫐', '🍉', '🥝', '🌟'];
+        const COLORS = [
+            'linear-gradient(135deg, #FFB6C1 0%, #FF69B4 100%)',
+            'linear-gradient(135deg, #98D8C8 0%, #4ECDC4 100%)',
+            'linear-gradient(135deg, #F7DC6F 0%, #F39C12 100%)',
+            'linear-gradient(135deg, #BB8FCE 0%, #8E44AD 100%)',
+            'linear-gradient(135deg, #85C1E2 0%, #3498DB 100%)',
+            'linear-gradient(135deg, #F8B739 0%, #E74C3C 100%)',
+            'linear-gradient(135deg, #58D68D 0%, #27AE60 100%)',
+            'linear-gradient(135deg, #EC7063 0%, #C0392B 100%)'
+        ];
+
+        // 游戏状态
+        let grid = [];
+        let score = 0;
+        let maxLevel = 1;
+        let draggedItem = null;
+        let draggedFrom = null;
+        let hintTimeout = null;
+
+        // 初始化游戏
+        function initGame() {
+            grid = Array(GRID_SIZE * GRID_SIZE).fill(null);
+            score = 0;
+            maxLevel = 1;
+            updateScore();
+            
+            // 初始填充一些元素
+            for (let i = 0; i < 6; i++) {
+                spawnRandomItem();
+            }
+            
+            renderGrid();
+        }
+
+        // 在随机空位置生成新元素
+        function spawnRandomItem() {
+            const emptyCells = [];
+            for (let i = 0; i < grid.length; i++) {
+                if (grid[i] === null) emptyCells.push(i);
+            }
+            
+            if (emptyCells.length === 0) return false;
+            
+            const randomCell = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            const level = Math.random() < 0.8 ? 1 : 2;
+            grid[randomCell] = { level, isNew: true };
+            return true;
+        }
+
+        // 渲染游戏棋盘
+        function renderGrid() {
+            const gridEl = document.getElementById('gameGrid');
+            gridEl.innerHTML = '';
+            
+            grid.forEach((item, index) => {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.dataset.index = index;
+                
+                if (item) {
+                    const itemEl = document.createElement('div');
+                    itemEl.className = `item level-${item.level}`;
+                    if (item.isNew) {
+                        itemEl.classList.add('new');
+                        item.isNew = false;
+                    }
+                    itemEl.textContent = ITEMS[item.level - 1] || '✨';
+                    itemEl.draggable = true;
+                    
+                    // 拖拽事件
+                    itemEl.addEventListener('dragstart', (e) => handleDragStart(e, index));
+                    itemEl.addEventListener('dragend', handleDragEnd);
+                    
+                    // 触摸事件支持
+                    itemEl.addEventListener('touchstart', (e) => handleTouchStart(e, index), {passive: false});
+                    itemEl.addEventListener('touchmove', handleTouchMove, {passive: false});
+                    itemEl.addEventListener('touchend', handleTouchEnd);
+                    
+                    cell.appendChild(itemEl);
+                }
+                
+                // 放置事件
+                cell.addEventListener('dragover', handleDragOver);
+                cell.addEventListener('drop', (e) => handleDrop(e, index));
+                cell.addEventListener('dragenter', (e) => handleDragEnter(e, index));
+                cell.addEventListener('dragleave', handleDragLeave);
+                
+                gridEl.appendChild(cell);
+            });
+        }
+
+        // 拖拽开始
+        function handleDragStart(e, index) {
+            draggedItem = grid[index];
+            draggedFrom = index;
+            e.target.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        // 拖拽结束
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+            document.querySelectorAll('.cell').forEach(cell => cell.classList.remove('highlight'));
+        }
+
+        // 拖拽经过
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+        }
+
+        // 拖拽进入
+        function handleDragEnter(e, index) {
+            e.preventDefault();
+            const cell = document.querySelector(`[data-index="${index}"]`);
+            cell.classList.add('highlight');
+        }
+
+        // 拖拽离开
+        function handleDragLeave(e) {
+            e.target.classList.remove('highlight');
+        }
+
+        // 放置
+        function handleDrop(e, toIndex) {
+            e.preventDefault();
+            const cell = document.querySelector(`[data-index="${toIndex}"]`);
+            cell.classList.remove('highlight');
+            
+            if (draggedFrom === toIndex) return;
+            
+            attemptMove(draggedFrom, toIndex);
+        }
+
+        // 触摸事件处理
+        let touchStartX, touchStartY;
+        let touchDraggedEl = null;
+
+        function handleTouchStart(e, index) {
+            e.preventDefault();
+            draggedItem = grid[index];
+            draggedFrom = index;
+            touchDraggedEl = e.target;
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            e.target.classList.add('dragging');
+        }
+
+        function handleTouchMove(e) {
+            e.preventDefault();
+            if (!touchDraggedEl) return;
+            
+            const touch = e.touches[0];
+            const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+            
+            document.querySelectorAll('.cell').forEach(cell => cell.classList.remove('highlight'));
+            
+            if (elementBelow) {
+                const cell = elementBelow.closest('.cell');
+                if (cell) cell.classList.add('highlight');
+            }
+        }
+
+        function handleTouchEnd(e) {
+            if (!touchDraggedEl) return;
+            
+            touchDraggedEl.classList.remove('dragging');
+            const touch = e.changedTouches[0];
+            const elementBelow = document.elementFromPoint(touch.clientX, touch.clientY);
+            
+            document.querySelectorAll('.cell').forEach(cell => cell.classList.remove('highlight'));
+            
+            if (elementBelow) {
+                const cell = elementBelow.closest('.cell');
+                if (cell) {
+                    const toIndex = parseInt(cell.dataset.index);
+                    if (draggedFrom !== toIndex) {
+                        attemptMove(draggedFrom, toIndex);
+                    }
+                }
+            }
+            
+            touchDraggedEl = null;
+        }
+
+        // 尝试移动
+        function attemptMove(from, to) {
+            const targetItem = grid[to];
+            
+            // 如果目标为空，直接移动
+            if (!targetItem) {
+                grid[to] = grid[from];
+                grid[from] = null;
+                afterMove();
+                return;
+            }
+            
+            // 如果等级相同，合成
+            if (targetItem.level === draggedItem.level) {
+                const newLevel = targetItem.level + 1;
+                grid[to] = { level: newLevel, isNew: true };
+                grid[from] = null;
+                
+                // 更新分数和最高等级
+                const points = newLevel * 10;
+                score += points;
+                if (newLevel > maxLevel) maxLevel = newLevel;
+                
+                updateScore();
+                createParticles(to);
+                showComboText(to, `+${points}`);
+                
+                // 播放合成动画
+                setTimeout(() => {
+                    const cell = document.querySelector(`[data-index="${to}"] .item`);
+                    if (cell) cell.classList.add('merging');
+                }, 50);
+                
+                afterMove();
+            }
+        }
+
+        // 移动后的处理
+        function afterMove() {
+            renderGrid();
+            
+            // 生成新元素
+            setTimeout(() => {
+                if (spawnRandomItem()) {
+                    renderGrid();
+                }
+                
+                // 检查游戏是否结束
+                if (isGameOver()) {
+                    showGameOver();
+                }
+            }, 300);
+        }
+
+        // 创建粒子效果
+        function createParticles(cellIndex) {
+            const cell = document.querySelector(`[data-index="${cellIndex}"]`);
+            const rect = cell.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            for (let i = 0; i < 8; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = centerX + 'px';
+                particle.style.top = centerY + 'px';
+                particle.style.background = COLORS[maxLevel - 1] || COLORS[0];
+                
+                const angle = (i / 8) * Math.PI * 2;
+                const distance = 50 + Math.random() * 30;
+                particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                
+                document.body.appendChild(particle);
+                setTimeout(() => particle.remove(), 600);
+            }
+        }
+
+        // 显示连击文字
+        function showComboText(cellIndex, text) {
+            const cell = document.querySelector(`[data-index="${cellIndex}"]`);
+            const rect = cell.getBoundingClientRect();
+            
+            const comboEl = document.createElement('div');
+            comboEl.className = 'combo-text';
+            comboEl.textContent = text;
+            comboEl.style.left = rect.left + rect.width / 2 + 'px';
+            comboEl.style.top = rect.top + 'px';
+            comboEl.style.transform = 'translateX(-50%)';
+            
+            document.body.appendChild(comboEl);
+            setTimeout(() => comboEl.remove(), 1000);
+        }
+
+        // 更新分数显示
+        function updateScore() {
+            document.getElementById('scoreValue').textContent = score;
+            document.getElementById('maxLevel').textContent = maxLevel;
+        }
+
+        // 检查游戏是否结束
+        function isGameOver() {
+            // 检查是否有空位
+            if (grid.some(cell => cell === null)) return false;
+            
+            // 检查是否有可合成的相邻元素
+            for (let i = 0; i < GRID_SIZE; i++) {
+                for (let j = 0; j < GRID_SIZE; j++) {
+                    const index = i * GRID_SIZE + j;
+                    const current = grid[index];
+                    
+                    // 检查右边
+                    if (j < GRID_SIZE - 1) {
+                        const right = grid[index + 1];
+                        if (right && right.level === current.level) return false;
+                    }
+                    
+                    // 检查下边
+                    if (i < GRID_SIZE - 1) {
+                        const below = grid[index + GRID_SIZE];
+                        if (below && below.level === current.level) return false;
+                    }
+                }
+            }
+            
+            return true;
+        }
+
+        // 显示提示
+        function showHint() {
+            // 清除之前的提示
+            document.querySelectorAll('.hint-pulse').forEach(el => el.classList.remove('hint-pulse'));
+            clearTimeout(hintTimeout);
+            
+            // 寻找可合成的配对
+            const hints = [];
+            for (let i = 0; i < grid.length; i++) {
+                if (!grid[i]) continue;
+                
+                const level = grid[i].level;
+                const row = Math.floor(i / GRID_SIZE);
+                const col = i % GRID_SIZE;
+                
+                // 检查四个方向
+                const directions = [
+                    { r: -1, c: 0 }, { r: 1, c: 0 },
+                    { r: 0, c: -1 }, { r: 0, c: 1 }
+                ];
+                
+                for (const dir of directions) {
+                    const newRow = row + dir.r;
+                    const newCol = col + dir.c;
+                    
+                    if (newRow >= 0 && newRow < GRID_SIZE && newCol >= 0 && newCol < GRID_SIZE) {
+                        const neighborIndex = newRow * GRID_SIZE + newCol;
+                        if (grid[neighborIndex] && grid[neighborIndex].level === level) {
+                            hints.push(i, neighborIndex);
+                        }
+                    }
+                }
+            }
+            
+            if (hints.length > 0) {
+                // 高亮提示
+                hints.forEach(index => {
+                    const item = document.querySelector(`[data-index="${index}"] .item`);
+                    if (item) item.classList.add('hint-pulse');
+                });
+                
+                // 3秒后移除提示
+                hintTimeout = setTimeout(() => {
+                    document.querySelectorAll('.hint-pulse').forEach(el => el.classList.remove('hint-pulse'));
+                }, 3000);
+            }
+        }
+
+        // 显示游戏结束
+        function showGameOver() {
+            document.getElementById('finalScore').textContent = score;
+            
+            let message = '';
+            if (score < 100) message = '再接再厉，继续加油！';
+            else if (score < 300) message = '不错哦，继续挑战更高分吧！';
+            else if (score < 500) message = '太棒了！你是合成高手！';
+            else message = '不可思议！你是合成大师！';
+            
+            document.getElementById('modalMessage').textContent = message;
+            document.getElementById('gameOverModal').classList.add('show');
+        }
+
+        // 开始游戏
+        function startGame() {
+            document.getElementById('startScreen').classList.add('hidden');
+            document.getElementById('gameContainer').classList.add('active');
+            initGame();
+        }
+
+        // 重新开始
+        function restartGame() {
+            document.getElementById('gameOverModal').classList.remove('show');
+            initGame();
+        }
+
+        // 防止页面滚动
+        document.addEventListener('touchmove', function(e) {
+            if (e.target.closest('.game-container')) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+</body>
+</html>

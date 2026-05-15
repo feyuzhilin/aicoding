@@ -1,0 +1,176 @@
+/* ==================== PlayerPanel ==================== */
+
+.player-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.player-panel__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2c3e50;
+  padding: 8px 12px;
+  background: #f0f2f5;
+  border-radius: 8px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.player-panel__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ==================== 玩家卡片 ==================== */
+
+.player-panel__card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease, transform 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.player-panel__card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px);
+}
+
+/* 当前回合玩家 - 发光边框 */
+.player-panel__card--current {
+  border-color: var(--player-color, #3498db);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--player-color, #3498db) 40%, transparent);
+}
+
+/* 破产玩家 - 灰色半透明 */
+.player-panel__card--bankrupt {
+  opacity: 0.5;
+  filter: grayscale(0.6);
+}
+
+.player-panel__card--bankrupt:hover {
+  transform: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+/* ==================== 颜色条 ==================== */
+
+.player-panel__color-bar {
+  height: 4px;
+  width: 100%;
+}
+
+/* ==================== 卡片内容 ==================== */
+
+.player-panel__card-content {
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ==================== 头部 ==================== */
+
+.player-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.player-panel__avatar {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.player-panel__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2c3e50;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-panel__turn-badge {
+  font-size: 10px;
+  font-weight: 600;
+  color: #ffffff;
+  background: var(--player-color, #3498db);
+  padding: 1px 6px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+/* ==================== 金额 ==================== */
+
+.player-panel__money {
+  display: flex;
+  align-items: center;
+}
+
+.player-panel__money-amount {
+  font-size: 15px;
+  font-weight: 700;
+  color: #27ae60;
+}
+
+.player-panel__money-amount--negative {
+  color: #e74c3c;
+}
+
+/* ==================== 信息行 ==================== */
+
+.player-panel__info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: #7f8c8d;
+}
+
+.player-panel__property-count {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.player-panel__jail-cards {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: #f39c12;
+}
+
+/* ==================== 状态 ==================== */
+
+.player-panel__status-row {
+  display: flex;
+  align-items: center;
+}
+
+.player-panel__status {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.player-panel__status--active {
+  color: #27ae60;
+  background: #eafaf1;
+}
+
+.player-panel__status--jail {
+  color: #e67e22;
+  background: #fef5e7;
+}
+
+.player-panel__status--bankrupt {
+  color: #95a5a6;
+  background: #f2f3f4;
+}

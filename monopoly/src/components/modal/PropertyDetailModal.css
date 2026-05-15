@@ -1,0 +1,201 @@
+.property-detail-modal {
+  text-align: center;
+}
+
+.property-detail-modal__color-bar {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.property-detail-modal__header {
+  margin-bottom: 16px;
+}
+
+.property-detail-modal__name {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 4px;
+}
+
+.property-detail-modal__group {
+  font-size: 13px;
+  color: #888;
+  font-weight: 500;
+}
+
+.property-detail-modal__owner {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.property-detail-modal__owner-label {
+  color: #666;
+  margin-right: 8px;
+}
+
+.property-detail-modal__owner-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.property-detail-modal__owner-none {
+  font-weight: 600;
+  color: #27ae60;
+}
+
+.property-detail-modal__mortgaged {
+  background: #fff3cd;
+  color: #856404;
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.property-detail-modal__info {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.property-detail-modal__info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.property-detail-modal__info-label {
+  font-weight: 500;
+}
+
+.property-detail-modal__info-value {
+  font-weight: 700;
+  color: #333;
+}
+
+.property-detail-modal__rent {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.property-detail-modal__rent-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.property-detail-modal__rent-table {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.property-detail-modal__rent-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 10px;
+  background: #fff;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.property-detail-modal__rent-row span:first-child {
+  color: #666;
+}
+
+.property-detail-modal__rent-row span:last-child {
+  font-weight: 700;
+  color: #e74c3c;
+}
+
+.property-detail-modal__utility-rent {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.8;
+}
+
+.property-detail-modal__utility-rent p {
+  margin: 0;
+  padding: 4px 0;
+}
+
+.property-detail-modal__build {
+  background: #eafaf1;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.property-detail-modal__build-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #27ae60;
+  margin-bottom: 6px;
+}
+
+.property-detail-modal__build-cost {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+.property-detail-modal__buildings {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.property-detail-modal__hotel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.property-detail-modal__hotel::before {
+  content: '🏨';
+}
+
+.property-detail-modal__houses::before {
+  content: '🏠 ';
+}
+
+.property-detail-modal__btn {
+  padding: 10px 40px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  transition: all 0.2s;
+}
+
+.property-detail-modal__btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}

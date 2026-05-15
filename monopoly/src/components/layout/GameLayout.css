@@ -1,0 +1,117 @@
+/* ==================== GameLayout ==================== */
+
+.game-layout {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  min-height: 100vh;
+  background: #e8ecf1;
+  box-sizing: border-box;
+}
+
+/* ==================== 左侧棋盘 ==================== */
+
+.game-layout__board {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* ==================== 右侧边栏 ==================== */
+
+.game-layout__sidebar {
+  width: 300px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 100vh;
+  overflow-y: auto;
+
+  /* 自定义滚动条 */
+  scrollbar-width: thin;
+  scrollbar-color: #dcdde1 transparent;
+}
+
+.game-layout__sidebar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.game-layout__sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.game-layout__sidebar::-webkit-scrollbar-thumb {
+  background: #dcdde1;
+  border-radius: 2px;
+}
+
+/* ==================== 面板 ==================== */
+
+.game-layout__panel {
+  flex-shrink: 0;
+}
+
+.game-layout__panel--grow {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.game-layout__panel--grow > * {
+  flex: 1;
+  min-height: 0;
+}
+
+/* ==================== 响应式：768px 以下改为上下布局 ==================== */
+
+@media (max-width: 768px) {
+  .game-layout {
+    flex-direction: column;
+    padding: 8px;
+    gap: 12px;
+    min-height: auto;
+  }
+
+  .game-layout__board {
+    order: 1;
+    width: 100%;
+  }
+
+  .game-layout__sidebar {
+    order: 2;
+    width: 100%;
+    max-height: none;
+    overflow-y: visible;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .game-layout__panel {
+    flex: 1 1 280px;
+    min-width: 280px;
+  }
+
+  .game-layout__panel--grow {
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
+}
+
+/* ==================== 响应式：小屏优化 ==================== */
+
+@media (max-width: 480px) {
+  .game-layout {
+    padding: 4px;
+    gap: 8px;
+  }
+
+  .game-layout__panel {
+    flex: 1 1 100%;
+    min-width: 100%;
+  }
+}

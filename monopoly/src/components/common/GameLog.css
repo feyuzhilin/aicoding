@@ -1,0 +1,134 @@
+/* ==================== GameLog ==================== */
+
+.game-log {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.game-log__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2c3e50;
+  padding: 8px 12px;
+  background: #f0f2f5;
+  border-radius: 8px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* ==================== 日志列表 ==================== */
+
+.game-log__list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 240px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  /* 自定义滚动条 */
+  scrollbar-width: thin;
+  scrollbar-color: #dcdde1 transparent;
+}
+
+.game-log__list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.game-log__list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.game-log__list::-webkit-scrollbar-thumb {
+  background: #dcdde1;
+  border-radius: 2px;
+}
+
+.game-log__list::-webkit-scrollbar-thumb:hover {
+  background: #bdc3c7;
+}
+
+/* ==================== 空状态 ==================== */
+
+.game-log__empty {
+  text-align: center;
+  color: #bdc3c7;
+  font-size: 12px;
+  padding: 20px;
+}
+
+/* ==================== 日志条目 ==================== */
+
+.game-log__entry {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  line-height: 1.5;
+  transition: background 0.15s ease;
+}
+
+.game-log__entry:hover {
+  background: #f8f9fa;
+}
+
+/* ==================== 时间戳 ==================== */
+
+.game-log__timestamp {
+  color: #bdc3c7;
+  font-size: 10px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  flex-shrink: 0;
+}
+
+/* ==================== 玩家名 ==================== */
+
+.game-log__player {
+  color: #2c3e50;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+/* ==================== 动作 ==================== */
+
+.game-log__action {
+  color: #7f8c8d;
+  flex-shrink: 0;
+}
+
+.game-log__action::after {
+  content: ' -';
+}
+
+/* ==================== 详情 ==================== */
+
+.game-log__detail {
+  color: #34495e;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ==================== 金钱变化 ==================== */
+
+.game-log__money {
+  font-weight: 700;
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+.game-log__money--positive {
+  color: #27ae60;
+}
+
+.game-log__money--negative {
+  color: #e74c3c;
+}

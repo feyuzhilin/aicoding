@@ -1,0 +1,131 @@
+.game-over-modal {
+  text-align: center;
+}
+
+.game-over-modal__celebration {
+  font-size: 64px;
+  margin-bottom: 8px;
+  animation: celebrate 1s ease-in-out infinite alternate;
+}
+
+@keyframes celebrate {
+  0% {
+    transform: scale(1) rotate(-5deg);
+  }
+  100% {
+    transform: scale(1.15) rotate(5deg);
+  }
+}
+
+.game-over-modal__winner {
+  font-size: 24px;
+  font-weight: 800;
+  color: #f39c12;
+  margin-bottom: 4px;
+}
+
+.game-over-modal__winner-name {
+  font-size: 28px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #f39c12, #e74c3c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+}
+
+.game-over-modal__rankings {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.game-over-modal__rankings-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.game-over-modal__ranking-item {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  transition: background 0.2s;
+}
+
+.game-over-modal__ranking-item:last-child {
+  margin-bottom: 0;
+}
+
+.game-over-modal__ranking-item--first {
+  background: linear-gradient(135deg, rgba(243, 156, 18, 0.15), rgba(231, 76, 60, 0.1));
+}
+
+.game-over-modal__ranking-item--bankrupt {
+  opacity: 0.5;
+}
+
+.game-over-modal__rank {
+  font-size: 18px;
+  font-weight: 800;
+  width: 32px;
+  color: #999;
+}
+
+.game-over-modal__ranking-item--first .game-over-modal__rank {
+  color: #f39c12;
+}
+
+.game-over-modal__ranking-item--second .game-over-modal__rank {
+  color: #95a5a6;
+}
+
+.game-over-modal__ranking-item--third .game-over-modal__rank {
+  color: #cd7f32;
+}
+
+.game-over-modal__player-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.game-over-modal__player-avatar {
+  font-size: 20px;
+}
+
+.game-over-modal__player-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 15px;
+}
+
+.game-over-modal__player-assets {
+  font-weight: 700;
+  color: #2ecc71;
+  font-size: 15px;
+}
+
+.game-over-modal__btn {
+  padding: 12px 40px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  background: linear-gradient(135deg, #f39c12, #e74c3c);
+  color: #fff;
+  transition: all 0.2s;
+}
+
+.game-over-modal__btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(243, 156, 18, 0.4);
+}
