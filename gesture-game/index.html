@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gesture Strike</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="game-stage" aria-label="Gesture Strike game">
+        <canvas id="gameCanvas" width="1280" height="720"></canvas>
+        <div class="hud top-left">
+          <div class="brand">GESTURE STRIKE</div>
+          <div class="stat-grid">
+            <div>
+              <span>分数</span>
+              <strong id="score">0</strong>
+            </div>
+            <div>
+              <span>护盾</span>
+              <strong id="shield">100</strong>
+            </div>
+            <div>
+              <span>进度</span>
+              <strong id="progress">0%</strong>
+            </div>
+          </div>
+        </div>
+
+        <div class="hud top-right">
+          <div class="camera-card">
+            <video id="camera" playsinline muted></video>
+            <canvas id="visionCanvas" width="320" height="240"></canvas>
+            <div id="calibrationBox" class="calibration-box"></div>
+          </div>
+          <div class="gesture-readout">
+            <span id="cameraStatus">摄像头未启动</span>
+            <strong id="gestureName">等待手势</strong>
+            <div class="meter"><i id="gestureMeter"></i></div>
+          </div>
+        </div>
+
+        <div class="hud bottom-left">
+          <button id="startCamera" type="button">启动摄像头</button>
+          <button id="calibrate" type="button" disabled>校准手部</button>
+          <button id="restart" type="button">重开</button>
+        </div>
+
+        <div class="briefing" id="briefing">
+          <h1>用手势夺回屏幕</h1>
+          <p>启动摄像头，把手放进右上角框内校准。手枪手势会沿手指方向射击，开掌悬停在能量核心上会推进进度。</p>
+          <button id="briefStart" type="button">开始任务</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="./game.js"></script>
+  </body>
+</html>

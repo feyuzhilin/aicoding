@@ -1,0 +1,289 @@
+:root {
+  color-scheme: dark;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #05070a;
+  color: #f4f7fb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+button {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f7fbff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  min-height: 42px;
+  padding: 0 16px;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-1px);
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.shell {
+  display: grid;
+  min-height: 100%;
+  place-items: center;
+  background:
+    radial-gradient(circle at 16% 20%, rgba(36, 91, 126, 0.35), transparent 28%),
+    radial-gradient(circle at 86% 74%, rgba(154, 63, 76, 0.26), transparent 32%),
+    linear-gradient(135deg, #05070a 0%, #0d1417 45%, #100b12 100%);
+}
+
+.game-stage {
+  height: min(100vh, 720px);
+  max-height: 100vh;
+  max-width: 100vw;
+  overflow: hidden;
+  position: relative;
+  width: min(100vw, 1280px);
+}
+
+#gameCanvas {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.hud {
+  position: absolute;
+  z-index: 5;
+}
+
+.top-left {
+  left: 24px;
+  top: 20px;
+}
+
+.top-right {
+  align-items: stretch;
+  display: flex;
+  gap: 12px;
+  right: 20px;
+  top: 18px;
+}
+
+.bottom-left {
+  bottom: 22px;
+  display: flex;
+  gap: 10px;
+  left: 22px;
+}
+
+.brand {
+  color: #86f3ff;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  margin-bottom: 10px;
+  text-shadow: 0 0 22px rgba(49, 210, 226, 0.5);
+}
+
+.stat-grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, minmax(78px, 1fr));
+}
+
+.stat-grid div,
+.gesture-readout,
+.camera-card {
+  backdrop-filter: blur(16px);
+  background: rgba(5, 10, 13, 0.64);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 8px;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.28);
+}
+
+.stat-grid div {
+  min-height: 64px;
+  padding: 10px 12px;
+}
+
+.stat-grid span,
+.gesture-readout span {
+  color: rgba(244, 247, 251, 0.68);
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.stat-grid strong {
+  display: block;
+  font-size: 24px;
+  line-height: 1.15;
+  margin-top: 4px;
+}
+
+.camera-card {
+  height: 150px;
+  overflow: hidden;
+  position: relative;
+  width: 200px;
+}
+
+#camera,
+#visionCanvas {
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  position: absolute;
+  transform: scaleX(-1);
+  width: 100%;
+}
+
+#visionCanvas {
+  opacity: 0.54;
+}
+
+.calibration-box {
+  border: 2px solid rgba(134, 243, 255, 0.9);
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 999px rgba(2, 6, 8, 0.16),
+    0 0 28px rgba(134, 243, 255, 0.46);
+  height: 58px;
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 58px;
+}
+
+.gesture-readout {
+  min-height: 150px;
+  padding: 14px;
+  width: 172px;
+}
+
+.gesture-readout strong {
+  display: block;
+  font-size: 20px;
+  line-height: 1.1;
+  margin: 18px 0 14px;
+}
+
+.meter {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.meter i {
+  background: linear-gradient(90deg, #86f3ff, #ffd166, #ff5d73);
+  display: block;
+  height: 100%;
+  transition: width 120ms ease;
+  width: 0%;
+}
+
+.briefing {
+  background: rgba(5, 10, 13, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  left: 50%;
+  max-width: min(560px, calc(100vw - 40px));
+  padding: 28px;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.briefing.hidden {
+  display: none;
+}
+
+.briefing h1 {
+  font-size: clamp(32px, 6vw, 68px);
+  letter-spacing: 0;
+  line-height: 0.92;
+  margin: 0 0 16px;
+}
+
+.briefing p {
+  color: rgba(244, 247, 251, 0.78);
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0 0 22px;
+}
+
+@media (max-width: 780px) {
+  .top-right {
+    flex-direction: column;
+    gap: 8px;
+    right: 12px;
+    top: 12px;
+  }
+
+  .camera-card {
+    height: 112px;
+    width: 150px;
+  }
+
+  .gesture-readout {
+    min-height: 92px;
+    padding: 10px;
+    width: 150px;
+  }
+
+  .gesture-readout strong {
+    font-size: 16px;
+    margin: 8px 0 10px;
+  }
+
+  .top-left {
+    left: 12px;
+    top: 12px;
+  }
+
+  .stat-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-grid div {
+    min-height: 50px;
+    width: 76px;
+  }
+
+  .stat-grid strong {
+    font-size: 18px;
+  }
+
+  .bottom-left {
+    bottom: 12px;
+    flex-wrap: wrap;
+    left: 12px;
+    max-width: calc(100vw - 24px);
+  }
+}
